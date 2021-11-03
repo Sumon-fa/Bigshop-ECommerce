@@ -5,17 +5,18 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     isLoading: false,
+    productCount: 0,
+    resPerPage: 0,
   },
   reducers: {
-    allProductCart(state, action) {
+    allProduct(state, action) {
       state.productCount = action.payload.productCount;
+      state.resPerPage = action.payload.resPerPage;
       state.products = action.payload.products;
+      state.filteredProductsCount = action.payload.filteredProductsCount;
     },
     loader(state) {
       state.isLoading = !state.isLoading;
-    },
-    productDetails(state, action) {
-      state.products = action.payload.products;
     },
   },
 });

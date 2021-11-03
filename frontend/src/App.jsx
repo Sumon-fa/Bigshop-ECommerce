@@ -4,19 +4,30 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Home from "./components/Home";
 import ProductDetails from "./components/product/ProductDetails";
+import Login from "./components/authentication/Login";
 import "./App.css";
 
 function App() {
   return (
     <Fragment>
-      <Header />
-      <Route path="/" exact>
-        <Home />
-      </Route>
-      <Route path="/product/:id">
-        <ProductDetails />
-      </Route>
-      <Footer />
+      <div className="App">
+        <Header />
+        <div className="container container-fluid">
+          <Route path="/" exact>
+            <Home />
+          </Route>
+          <Route path="/search/:keyword">
+            <Home />
+          </Route>
+          <Route path="/product/:id" exact>
+            <ProductDetails />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+        </div>
+        <Footer />
+      </div>
     </Fragment>
   );
 }
