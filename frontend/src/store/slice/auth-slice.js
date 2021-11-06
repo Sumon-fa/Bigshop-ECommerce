@@ -16,7 +16,7 @@ const authSlice = createSlice({
       state.isLoading = !state.isLoading;
     },
     userRegister(state, action) {
-      state.isAuthenticated = true;
+      state.isAuthenticated = action.payload.isAuthenticated;
       state.user = action.payload.user;
     },
   },

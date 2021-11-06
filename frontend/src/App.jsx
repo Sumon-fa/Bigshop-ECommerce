@@ -5,6 +5,7 @@ import Footer from "./components/layout/Footer";
 import Home from "./components/Home";
 import ProductDetails from "./components/product/ProductDetails";
 import Login from "./components/authentication/Login";
+import Register from "./components/authentication/Register";
 import "./App.css";
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
           </Route>
         </div>
         <Footer />

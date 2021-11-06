@@ -4,7 +4,7 @@ import MetaData from "../layout/MetaData";
 import { uiActions } from "../../store/slice/ui-slice";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../actions/userActions";
+import { register } from "../../store/action/auth-Actions";
 
 const Register = () => {
   const history = useHistory();

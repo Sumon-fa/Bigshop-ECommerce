@@ -5,7 +5,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 //create newProduct => /api/v1/new
 exports.newProduct = catchAsyncError(async (req, res, next) => {
   req.body.user = req.user.id;
-  console.log(req.body.user);
+
   const product = await Product.create(req.body);
   res.status(201).json({
     success: true,
@@ -18,18 +18,21 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 
   const apiFeatures = new ApiFeature(Product.find(), req.query)
     .search()
-    .filter()
-    .pagination(resPerPage);
+    .filter();
+
   const productCount = await Product.countDocuments();
+  apiFeatures.pagination(resPerPage);
   const products = await apiFeatures.query; //this
+  let filteredProductsCount = products.length;
   setTimeout(() => {
     res.status(200).json({
       success: true,
-
+      resPerPage,
       productCount,
+      filteredProductsCount,
       products,
     });
-  }, 2000);
+  }, 0);
 });
 // get single products =>/api/v1/product/:id
 exports.getSingleProduct = catchAsyncError(async (req, res, next) => {

@@ -34,19 +34,20 @@ export const login = (email, password) => {
     dispatch(authActions.loader());
   };
 };
-export const register = (userData) => {
+export const register = (formData) => {
   return async (dispatch) => {
     const fetchUserData = async () => {
       dispatch(authActions.loader());
       const response = await fetch("/api/v1/register", {
         method: "POST",
-        body: JSON.stringify(userData),
-        headers: { "Content-type": "multipart/form-data" },
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "multipart/form-data" },
       });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message);
       }
+
       return data;
     };
 
@@ -56,12 +57,19 @@ export const register = (userData) => {
       dispatch(
         authActions.userRegister({
           user: usersData.user,
+          isAuthenticated: true,
         })
       );
     } catch (error) {
       dispatch(
         uiActions.showNotification({
           message: error.message,
+        })
+      );
+      dispatch(
+        authActions.userRegister({
+          user: null,
+          isAuthenticated: false,
         })
       );
     }
