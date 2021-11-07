@@ -10,12 +10,20 @@ const authSlice = createSlice({
   reducers: {
     authentication(state, action) {
       state.user = action.payload.user;
-      state.isAuthenticated = true;
+      state.isAuthenticated = action.payload.isAuthenticated;
     },
     loader(state) {
       state.isLoading = !state.isLoading;
     },
     userRegister(state, action) {
+      state.isAuthenticated = action.payload.isAuthenticated;
+      state.user = action.payload.user;
+    },
+    loadUser(state, action) {
+      state.isAuthenticated = action.payload.isAuthenticated;
+      state.user = action.payload.user;
+    },
+    logout(state, action) {
       state.isAuthenticated = action.payload.isAuthenticated;
       state.user = action.payload.user;
     },
