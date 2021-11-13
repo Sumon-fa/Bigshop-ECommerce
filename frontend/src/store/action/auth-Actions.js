@@ -1,6 +1,7 @@
 import { uiActions } from "../slice/ui-slice";
 import { authActions } from "../slice/auth-slice";
-
+import { userActions } from "../slice/user-slice";
+import axios from "axios";
 export const login = (email, password) => {
   return async (dispatch) => {
     const fetchUserData = async () => {
@@ -130,6 +131,51 @@ export const userLoad = () => {
   };
 };
 
+export const updateProfile = (userData) => {
+  return async (dispatch) => {
+    const fetchUserData = async () => {
+      dispatch(userActions.loader());
+      const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.put("/api/v1/me/update", userData, config);
+      console.log(data);
+      /*const response = await fetch("/api/v1/me/update", {
+        method: "PUT",
+        body: userData,
+      });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message);
+      }*/
+
+      return data;
+    };
+
+    try {
+      const usersData = await fetchUserData();
+
+      dispatch(
+        userActions.updateProfile({
+          isUpdated: usersData.success,
+        })
+      );
+    } catch (error) {
+      const userData = await fetchUserData();
+      dispatch(
+        uiActions.showNotification({
+          message: userData.response.error.message,
+        })
+      );
+      dispatch(
+        userActions.updateProfile({
+          isUpdated: false,
+        })
+      );
+    }
+    dispatch(userActions.loader());
+  };
+};
+
 export const logout = () => {
   return async (dispatch) => {
     const fetchUserData = async () => {
@@ -164,5 +210,132 @@ export const logout = () => {
       );
     }
     dispatch(authActions.loader());
+  };
+};
+
+export const updatePassword = (passwords) => {
+  return async (dispatch) => {
+    const fetchUserData = async () => {
+      dispatch(userActions.loader());
+      /*const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.put("/api/v1/me/update", userData, config);
+      console.log(data);*/
+      const response = await fetch("/api/v1/password/update", {
+        method: "PUT",
+        body: passwords,
+      });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const usersData = await fetchUserData();
+
+      dispatch(
+        userActions.updateProfile({
+          isUpdated: usersData.success,
+        })
+      );
+    } catch (error) {
+      const userData = await fetchUserData();
+      dispatch(
+        uiActions.showNotification({
+          message: userData.response.error.message,
+        })
+      );
+      dispatch(
+        userActions.updateProfile({
+          isUpdated: false,
+        })
+      );
+    }
+    dispatch(userActions.loader());
+  };
+};
+export const forgotPassword = (email) => {
+  return async (dispatch) => {
+    const fetchUserData = async () => {
+      dispatch(userActions.loader());
+      /*const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.put("/api/v1/me/update", userData, config);
+      console.log(data);*/
+      const response = await fetch("/api/v1/password/forgot", {
+        method: "POST",
+        body: email,
+      });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const usersData = await fetchUserData();
+
+      dispatch(
+        userActions.forgot({
+          message: usersData.message,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+      dispatch(
+        userActions.forgot({
+          isUpdated: false,
+        })
+      );
+    }
+    dispatch(userActions.loader());
+  };
+};
+
+export const resetPassword = (token, passwords) => {
+  return async (dispatch) => {
+    const fetchUserData = async () => {
+      dispatch(userActions.loader());
+      /*const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.put("/api/v1/me/update", userData, config);
+      console.log(data);*/
+      const response = await fetch(`/api/v1/password/reset/${token}`, {
+        method: "PUT",
+        body: passwords,
+      });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const usersData = await fetchUserData();
+
+      dispatch(
+        userActions.newPassword({
+          success: usersData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(userActions.loader());
   };
 };

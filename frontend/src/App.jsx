@@ -12,6 +12,10 @@ import { useSelector } from "react-redux";
 import store from "./store/store";
 import Profile from "./components/authentication/Profile";
 import ProtectedRoutes from "./components/routes/ProtectedRoutes";
+import UpdateProfile from "./components/authentication/UpdateProfile";
+import UpdatePassword from "./components/authentication/UpdatePassword";
+import ForgotPassword from "./components/authentication/ForgotPassword";
+import NewPassword from "./components/authentication/NewPassword";
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   console.log(isAuthenticated);
@@ -39,6 +43,18 @@ function App() {
             <Register />
           </Route>
           <ProtectedRoutes path="/me" component={Profile} exact />
+          <ProtectedRoutes path="/me/update" component={UpdateProfile} exact />
+          <ProtectedRoutes
+            path="/password/update"
+            component={UpdatePassword}
+            exact
+          />
+          <Route path="/password/forgot" exact>
+            <ForgotPassword />
+          </Route>
+          <Route path="/password/reset/:token" exact>
+            <NewPassword />
+          </Route>
         </div>
         <Footer />
       </div>
