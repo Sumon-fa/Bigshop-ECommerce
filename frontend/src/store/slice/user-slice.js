@@ -4,6 +4,9 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     isLoading: false,
+    isUpdated: false,
+    message: null,
+    success: false,
   },
   reducers: {
     updateProfile(state, action) {

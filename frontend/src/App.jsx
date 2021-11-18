@@ -16,6 +16,8 @@ import UpdateProfile from "./components/authentication/UpdateProfile";
 import UpdatePassword from "./components/authentication/UpdatePassword";
 import ForgotPassword from "./components/authentication/ForgotPassword";
 import NewPassword from "./components/authentication/NewPassword";
+import Cart from "./components/cart/Cart";
+
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   console.log(isAuthenticated);
@@ -33,8 +35,11 @@ function App() {
           <Route path="/search/:keyword">
             <Home />
           </Route>
-          <Route path="/product/:id" exact>
+          <Route path="/product/:id">
             <ProductDetails />
+          </Route>
+          <Route path="/cart">
+            <Cart />
           </Route>
           <Route path="/login">
             <Login />
