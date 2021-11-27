@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import MetaData from "../layout/MetaData";
 import { useAlert } from "react-alert";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import { login } from "../../store/action/auth-Actions";
 import { uiActions } from "../../store/slice/ui-slice";
@@ -12,14 +12,16 @@ const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const alert = useAlert();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const errorNotification = useSelector((state) => state.ui.notification);
 
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
+  const redirect = location.search ? location.search.split("=")[1] : "/";
   useEffect(() => {
     if (isAuthenticated) {
-      history.push("/");
+      history.push(redirect);
     }
     if (errorNotification) {
       alert.error(errorNotification);
@@ -29,7 +31,7 @@ const Login = () => {
         })
       );
     }
-  }, [dispatch, isAuthenticated, alert, history, errorNotification]);
+  }, [dispatch, isAuthenticated, alert, history, errorNotification, redirect]);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));

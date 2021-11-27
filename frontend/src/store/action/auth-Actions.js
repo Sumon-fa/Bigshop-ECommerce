@@ -185,7 +185,7 @@ export const logout = () => {
       console.log(data);*/
       const response = await fetch("/api/v1/logout");
       const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
         throw new Error(data.message);
       }
@@ -225,7 +225,7 @@ export const updatePassword = (passwords) => {
         body: passwords,
       });
       const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
         throw new Error(data.message);
       }
@@ -269,7 +269,7 @@ export const forgotPassword = (email) => {
         body: email,
       });
       const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
         throw new Error(data.message);
       }

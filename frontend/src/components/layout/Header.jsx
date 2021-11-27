@@ -15,6 +15,7 @@ const Header = () => {
     dispatch(logout());
     alert.success("Logged out successfully.");
   };
+
   return (
     <Fragment>
       <nav className="navbar row">

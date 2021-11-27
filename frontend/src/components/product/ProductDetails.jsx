@@ -7,18 +7,35 @@ import Loader from "../layout/Loader";
 import MetaData from "../layout/MetaData";
 import { useAlert } from "react-alert";
 import { getAddItemToCart } from "../../store/action/cart-actions";
+import { newReview } from "../../store/action/review-action";
+import { reviewActions } from "../../store/slice/review-slice";
+import ListReviews from "../ListReviews";
 
 const ProductDetails = () => {
+  const [quantity, setQuantity] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
   const { product, isLoading } = useSelector((state) => state.details);
-  const params = useParams();
+  const user = useSelector((state) => state.auth.user);
+  const { success } = useSelector((state) => state.review);
   const errorNotification = useSelector((state) => state.ui.notification);
   const dispatch = useDispatch();
+  const params = useParams();
   const alert = useAlert();
-  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (errorNotification) {
-      return alert.error(errorNotification);
+      alert.error(errorNotification);
+    }
+    if (success) {
+      alert.success("Reivew posted successfully");
+
+      dispatch(
+        reviewActions.newProductReview({
+          success: false,
+        })
+      );
     }
     dispatch(getProductsDetails(params.id));
   }, [dispatch, params.id, alert, errorNotification]);
@@ -34,10 +51,57 @@ const ProductDetails = () => {
     if (quantity <= 1) return;
     setQuantity(quantity - 1);
   }
-  function addToCartHandler() {
+  function addToCart() {
     dispatch(getAddItemToCart(params.id, quantity));
     alert.success("Items added to cart");
   }
+  function setUserRatings() {
+    const stars = document.querySelectorAll(".star");
+
+    stars.forEach((star, index) => {
+      star.starValue = index + 1;
+
+      ["click", "mouseover", "mouseout"].forEach(function (e) {
+        star.addEventListener(e, showRatings);
+      });
+    });
+
+    function showRatings(e) {
+      stars.forEach((star, index) => {
+        if (e.type === "click") {
+          if (index < this.starValue) {
+            star.classList.add("orange");
+
+            setRating(this.starValue);
+          } else {
+            star.classList.remove("orange");
+          }
+        }
+
+        if (e.type === "mouseover") {
+          if (index < this.starValue) {
+            star.classList.add("yellow");
+          } else {
+            star.classList.remove("yellow");
+          }
+        }
+
+        if (e.type === "mouseout") {
+          star.classList.remove("yellow");
+        }
+      });
+    }
+  }
+
+  const reviewHandler = () => {
+    const formData = new FormData();
+
+    formData.set("rating", rating);
+    formData.set("comment", comment);
+    formData.set("productId", params.id);
+
+    dispatch(newReview(formData));
+  };
 
   return (
     <Fragment>
@@ -46,24 +110,25 @@ const ProductDetails = () => {
       ) : (
         <Fragment>
           <MetaData title={product.name} />
-          <div className="row f-flex justify-content-around">
+          <div className="row d-flex justify-content-around">
             <div className="col-12 col-lg-5 img-fluid" id="product_image">
               <Carousel pause="hover">
-                {product &&
-                  product.images.map((img) => (
-                    <Carousel.Item key={img.public_id}>
+                {product.images &&
+                  product.images.map((image) => (
+                    <Carousel.Item key={image.public_id}>
                       <img
                         className="d-block w-100"
-                        src={img.url}
-                        alt={product.name}
+                        src={image.url}
+                        alt={product.title}
                       />
                     </Carousel.Item>
                   ))}
               </Carousel>
             </div>
+
             <div className="col-12 col-lg-5 mt-5">
               <h3>{product.name}</h3>
-              <p id="product_id">{product._id}</p>
+              <p id="product_id">Product # {product._id}</p>
 
               <hr />
 
@@ -98,8 +163,8 @@ const ProductDetails = () => {
                 type="button"
                 id="cart_btn"
                 className="btn btn-primary d-inline ml-4"
-                disabled={product.stock === 0 && true}
-                onClick={addToCartHandler}
+                disabled={product.stock === 0}
+                onClick={addToCart}
               >
                 Add to Cart
               </button>
@@ -125,15 +190,22 @@ const ProductDetails = () => {
                 Sold by: <strong>{product.seller}</strong>
               </p>
 
-              <button
-                id="review_btn"
-                type="button"
-                className="btn btn-primary mt-4"
-                data-toggle="modal"
-                data-target="#ratingModal"
-              >
-                Submit Your Review
-              </button>
+              {user ? (
+                <button
+                  id="review_btn"
+                  type="button"
+                  className="btn btn-primary mt-4"
+                  data-toggle="modal"
+                  data-target="#ratingModal"
+                  onClick={setUserRatings}
+                >
+                  Submit Your Review
+                </button>
+              ) : (
+                <div className="alert alert-danger mt-5" type="alert">
+                  Login to post your review.
+                </div>
+              )}
 
               <div className="row mt-2 mb-5">
                 <div className="rating w-50">
@@ -183,10 +255,13 @@ const ProductDetails = () => {
                             name="review"
                             id="review"
                             className="form-control mt-3"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
                           ></textarea>
 
                           <button
                             className="btn my-3 float-right review-btn px-4 text-white"
+                            onClick={reviewHandler}
                             data-dismiss="modal"
                             aria-label="Close"
                           >
@@ -200,6 +275,9 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
+          {product.reviews && product.reviews.length > 0 && (
+            <ListReviews reviews={product.reviews} />
+          )}
         </Fragment>
       )}
     </Fragment>
