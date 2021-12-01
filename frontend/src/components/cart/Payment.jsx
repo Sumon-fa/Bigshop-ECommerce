@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import MetaData from "../layout/MetaData";
 import CheckoutSteps from "./CheckoutSteps";
@@ -37,7 +37,6 @@ const Payment = ({ history }) => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const errorNotification = useSelector((state) => state.ui.notifcation);
-  const [paymentInfo, setPaymentInfo] = useState({});
   useEffect(() => {
     if (errorNotification) {
       alert.error(errorNotification);
@@ -48,20 +47,21 @@ const Payment = ({ history }) => {
       );
     }
   }, [errorNotification, dispatch, alert]);
-  const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
-
   const order = {
     orderItems: cartItems,
     shippingInfo,
-    itemsPrice: Number(orderInfo.itemsPrice),
-    shippingPrice: orderInfo.shippingPrice,
-    taxPrice: orderInfo.taxPrice,
-    totalPrice: Number(orderInfo.totalPrice),
-    paymentInfo,
   };
+  const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
+
+  if (orderInfo) {
+    order.itemsPrice = orderInfo.itemsPrice;
+    order.shippingPrice = orderInfo.shippingPrice;
+    order.taxPrice = orderInfo.taxPrice;
+    order.totalPrice = orderInfo.totalPrice;
+  }
 
   const paymentData = { amount: Math.round(orderInfo.totalPrice * 100) };
-  console.log(order);
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -99,11 +99,11 @@ const Payment = ({ history }) => {
       } else {
         // The payment is processed or not
         if (result.paymentIntent.status === "succeeded") {
-          const paymentInfo = {
+          order.paymentInfo = {
             id: result.paymentIntent.id,
             status: result.paymentIntent.status,
           };
-          setPaymentInfo(paymentInfo);
+
           dispatch(createOrder(order));
           history.push("/success");
         } else {

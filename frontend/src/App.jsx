@@ -25,7 +25,14 @@ import axios from "axios";
 import OrderSuccess from "./components/cart/OrderSuccess";
 import ListOrders from "./components/order/ListOrders";
 import OrderDetails from "./components/order/OrderDetails";
-
+import Dashboard from "./components/admin/Dashboard";
+import ProductsList from "./components/admin/ProductsList";
+import NewProduct from "./components/admin/NewProduct";
+import UpdateProduct from "./components/admin/UpdateProduct";
+import OrdersList from "./components/admin/OrderList";
+import ProcessOrder from "./components/admin/ProcessOrder";
+import UsersList from "./components/admin/UserList";
+import UpdateUser from "./components/admin/UpdateUser";
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
   useEffect(() => {
@@ -86,6 +93,54 @@ function App() {
             <NewPassword />
           </Route>
         </div>
+        <ProtectedRoutes
+          path="/dashboard"
+          isAdmin={true}
+          component={Dashboard}
+          exact
+        />
+        <ProtectedRoutes
+          path="/admin/products"
+          isAdmin={true}
+          component={ProductsList}
+          exact
+        />
+        <ProtectedRoutes
+          path="/admin/product"
+          isAdmin={true}
+          component={NewProduct}
+          exact
+        />
+        <ProtectedRoutes
+          path="/admin/product/:id"
+          isAdmin={true}
+          component={UpdateProduct}
+          exact
+        />
+        <ProtectedRoutes
+          path="/admin/orders"
+          isAdmin={true}
+          component={OrdersList}
+          exact
+        />
+        <ProtectedRoutes
+          path="/admin/order/:id"
+          isAdmin={true}
+          component={ProcessOrder}
+          exact
+        />
+        <ProtectedRoutes
+          path="/admin/users"
+          isAdmin={true}
+          component={UsersList}
+          exact
+        />
+        <ProtectedRoutes
+          path="/admin/user/:id"
+          isAdmin={true}
+          component={UpdateUser}
+          exact
+        />
         <Footer />
       </div>
     </Fragment>

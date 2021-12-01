@@ -94,3 +94,111 @@ export const getMyOrderDetails = (id) => {
     dispatch(orderActions.loader());
   };
 };
+
+export const getAllOrder = () => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(orderActions.loader());
+      const response = await fetch("/api/v1/admin/orders");
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const orderData = await fetchData();
+
+      dispatch(
+        orderActions.allOrders({
+          allOrder: orderData.orders,
+          totalAmount: orderData.totalAmount,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(orderActions.loader());
+  };
+};
+
+export const updateOrder = (id, formData) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(orderActions.loader());
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/v1/admin/order/${id}`,
+        formData,
+        config
+      );
+
+      return data;
+    };
+
+    try {
+      const orderData = await fetchData();
+
+      dispatch(
+        orderActions.orderUpdate({
+          isUpdated: orderData.success,
+        })
+      );
+    } catch (error) {
+      const userData = await fetchData();
+      dispatch(
+        uiActions.showNotification({
+          message: userData.response.error.message,
+        })
+      );
+    }
+    dispatch(orderActions.loader());
+  };
+};
+
+export const deleteOrder = (id) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(orderActions.loader());
+      const response = await fetch(`/api/v1/admin/order/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const orderData = await fetchData();
+
+      dispatch(
+        orderActions.removeOrder({
+          isDeleted: orderData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(orderActions.loader());
+  };
+};

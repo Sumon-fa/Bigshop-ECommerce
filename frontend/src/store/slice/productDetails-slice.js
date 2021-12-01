@@ -5,6 +5,7 @@ const productDetailsSlice = createSlice({
   initialState: {
     product: { images: [] },
     isLoading: false,
+    success: false,
   },
   reducers: {
     productDetails(state, action) {
@@ -12,6 +13,9 @@ const productDetailsSlice = createSlice({
     },
     loader(state) {
       state.isLoading = !state.isLoading;
+    },
+    createProduct(state, action) {
+      state.success = action.payload.success;
     },
   },
 });

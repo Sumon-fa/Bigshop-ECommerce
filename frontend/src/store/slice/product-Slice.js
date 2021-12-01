@@ -7,6 +7,8 @@ const productSlice = createSlice({
     isLoading: false,
     productCount: 0,
     resPerPage: 0,
+    isDeleted: false,
+    isUpdated: false,
   },
   reducers: {
     allProduct(state, action) {
@@ -17,6 +19,16 @@ const productSlice = createSlice({
     },
     loader(state) {
       state.isLoading = !state.isLoading;
+    },
+
+    adminProducts(state, action) {
+      state.products = action.payload.products;
+    },
+    removeProducts(state, action) {
+      state.isDeleted = action.payload.isDeleted;
+    },
+    updateProduct(state, action) {
+      state.isUpdated = action.payload.isUpdated;
     },
   },
 });

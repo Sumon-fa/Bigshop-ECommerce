@@ -65,7 +65,7 @@ const Home = () => {
   function setCurrentPageNo(pageNumber) {
     setCurrentpage(pageNumber);
   }
-  console.log(filteredProductsCount);
+
   let count = productCount;
   if (keyword) {
     count = filteredProductsCount;

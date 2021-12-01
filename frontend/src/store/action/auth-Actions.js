@@ -54,7 +54,7 @@ export const register = (formData) => {
         body: formData,
       });
       const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
         throw new Error(data.message);
       }
@@ -68,7 +68,7 @@ export const register = (formData) => {
       dispatch(
         authActions.userRegister({
           user: usersData.user,
-          isAuthenticated: true,
+          isAuthenticated: usersData.success,
         })
       );
     } catch (error) {
@@ -97,7 +97,7 @@ export const userLoad = () => {
       console.log(data);*/
       const response = await fetch("/api/v1/me");
       const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
         throw new Error(data.message);
       }
@@ -137,7 +137,7 @@ export const updateProfile = (userData) => {
       dispatch(userActions.loader());
       const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.put("/api/v1/me/update", userData, config);
-      console.log(data);
+
       /*const response = await fetch("/api/v1/me/update", {
         method: "PUT",
         body: userData,
@@ -313,7 +313,7 @@ export const resetPassword = (token, passwords) => {
         body: passwords,
       });
       const data = await response.json();
-      console.log(data);
+
       if (!response.ok) {
         throw new Error(data.message);
       }
@@ -327,6 +327,149 @@ export const resetPassword = (token, passwords) => {
       dispatch(
         userActions.newPassword({
           success: usersData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(userActions.loader());
+  };
+};
+
+export const getAllUsers = () => {
+  return async (dispatch) => {
+    const fetchUserData = async () => {
+      dispatch(userActions.loader());
+      /*const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.put("/api/v1/me/update", userData, config);
+      console.log(data);*/
+      const response = await fetch("/api/v1/admin/users");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const usersData = await fetchUserData();
+
+      dispatch(
+        userActions.allUsers({
+          users: usersData.users,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(userActions.loader());
+  };
+};
+export const deleteUser = (id) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(userActions.loader());
+      const response = await fetch(`/api/v1/admin/user/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const userData = await fetchData();
+
+      dispatch(
+        userActions.removeUser({
+          isDeleted: userData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(userActions.loader());
+  };
+};
+export const updateUser = (id, formData) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(userActions.loader());
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/v1/admin/user/${id}`,
+        formData,
+        config
+      );
+
+      return data;
+    };
+
+    try {
+      const userData = await fetchData();
+
+      dispatch(
+        userActions.userUpdate({
+          isUpdate: userData.success,
+        })
+      );
+    } catch (error) {
+      const userItem = await fetchData();
+      dispatch(
+        uiActions.showNotification({
+          message: userItem.response.error.message,
+        })
+      );
+    }
+    dispatch(userActions.loader());
+  };
+};
+export const getUserDetails = (id) => {
+  return async (dispatch) => {
+    const fetchUserData = async () => {
+      dispatch(userActions.loader());
+      /*const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.put("/api/v1/me/update", userData, config);
+      console.log(data);*/
+      const response = await fetch(`/api/v1/admin/user/${id}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const userData = await fetchUserData();
+
+      dispatch(
+        userActions.details({
+          user: userData.user,
         })
       );
     } catch (error) {

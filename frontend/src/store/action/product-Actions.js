@@ -78,3 +78,144 @@ export const getProductsDetails = (id) => {
     dispatch(productDetailsActions.loader());
   };
 };
+
+export const getAdminProducts = () => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(productActions.loader());
+      const response = await fetch("/api/v1/admin/products");
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const productData = await fetchData();
+
+      dispatch(
+        productActions.adminProducts({
+          products: productData.products || [],
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(productActions.loader());
+  };
+};
+
+export const newProduct = (formData) => {
+  return async (dispatch) => {
+    const fetchUserData = async () => {
+      dispatch(productDetailsActions.loader());
+      /*  const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.post("/api/v1/register", formData, config);
+      console.log(data);*/
+      const response = await fetch("/api/v1/admin/product/new", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const productData = await fetchUserData();
+
+      dispatch(
+        productDetailsActions.createProduct({
+          success: productData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(productDetailsActions.loader());
+  };
+};
+export const deleteProducts = (id) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(productActions.loader());
+      const response = await fetch(`/api/v1/admin/product/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const productData = await fetchData();
+
+      dispatch(
+        productActions.removeProducts({
+          isDeleted: productData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(productActions.loader());
+  };
+};
+export const productUpdating = (formData, id) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(productActions.loader());
+      const response = await fetch(`/api/v1/admin/product/${id}`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const productData = await fetchData();
+
+      dispatch(
+        productActions.updateProduct({
+          isUpdated: productData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(productActions.loader());
+  };
+};

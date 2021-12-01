@@ -7,6 +7,10 @@ const userSlice = createSlice({
     isUpdated: false,
     message: null,
     success: false,
+    users: [],
+    isUpdate: false,
+    isDeleted: false,
+    user: {},
   },
   reducers: {
     updateProfile(state, action) {
@@ -20,6 +24,18 @@ const userSlice = createSlice({
     },
     newPassword(state, action) {
       state.success = action.payload.success;
+    },
+    allUsers(state, action) {
+      state.users = action.payload.users;
+    },
+    userUpdate(state, action) {
+      state.isUpdate = action.payload.isUpdate;
+    },
+    removeUser(state, action) {
+      state.isDeleted = action.payload.isDeleted;
+    },
+    details(state, action) {
+      state.user = action.payload.user;
     },
   },
 });

@@ -7,6 +7,10 @@ const orderSlice = createSlice({
     orderData: {},
     myOrdersData: [],
     order: {},
+    totalAmount: 0,
+    allOrder: [],
+    isUpdated: false,
+    isDeleted: false,
   },
   reducers: {
     loader(state) {
@@ -20,6 +24,16 @@ const orderSlice = createSlice({
     },
     orderDetails(state, action) {
       state.order = action.payload.order;
+    },
+    allOrders(state, action) {
+      state.allOrder = action.payload.allOrder;
+      state.totalAmount = action.payload.totalAmount;
+    },
+    orderUpdate(state, action) {
+      state.isUpdated = action.payload.isUpdated;
+    },
+    removeOrder(state, action) {
+      state.isDeleted = action.payload.isDeleted;
     },
   },
 });

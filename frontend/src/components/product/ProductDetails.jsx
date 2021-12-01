@@ -38,7 +38,7 @@ const ProductDetails = () => {
       );
     }
     dispatch(getProductsDetails(params.id));
-  }, [dispatch, params.id, alert, errorNotification]);
+  }, [dispatch, params.id, alert, errorNotification, success]);
 
   function increaseQty() {
     if (quantity >= product.stock) {
