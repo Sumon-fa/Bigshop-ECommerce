@@ -67,7 +67,7 @@ export const register = (formData) => {
 
       dispatch(
         authActions.userRegister({
-          isAuthenticated: usersData.success,
+          isAuthenticated: true,
           user: usersData.user,
         })
       );
