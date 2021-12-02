@@ -2,7 +2,7 @@ import { uiActions } from "../slice/ui-slice";
 import { orderActions } from "../slice/order-slice";
 import axios from "axios";
 
-export const createOrder = (order) => async (dispatch, getState) => {
+/*export const createOrder = (order) => async (dispatch) => {
   try {
     dispatch(orderActions.loader());
 
@@ -14,6 +14,11 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
     const { data } = await axios.post("/api/v1/order/new", order, config);
 
+    const response = await fetch("/api/v1/order/new", {
+      method: "POST",
+      body: order,
+    });
+    const data = await response.json();
     dispatch(
       orderActions.orderCreate({
         orderData: data,
@@ -27,6 +32,43 @@ export const createOrder = (order) => async (dispatch, getState) => {
     );
   }
   dispatch(orderActions.loader());
+};*/
+
+export const createOrder = (order) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      dispatch(orderActions.loader());
+      const response = await fetch("/api/v1/order/new", {
+        method: "POST",
+        body: JSON.stringify(order),
+        headers: { "Content-type": "application/json" },
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      return data;
+    };
+
+    try {
+      const orderData = await fetchData();
+
+      dispatch(
+        orderActions.orderCreate({
+          success: orderData.success,
+        })
+      );
+    } catch (error) {
+      dispatch(
+        uiActions.showNotification({
+          message: error.message,
+        })
+      );
+    }
+    dispatch(orderActions.loader());
+  };
 };
 
 export const getMyOrders = () => {

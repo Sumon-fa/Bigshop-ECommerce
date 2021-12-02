@@ -30,6 +30,7 @@ const Register = () => {
   useEffect(() => {
     if (isAuthenticated) {
       history.push("/");
+      alert.success("User Has Been Registered Successfully");
     }
 
     if (errorNotification) {

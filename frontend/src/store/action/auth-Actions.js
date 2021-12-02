@@ -13,7 +13,7 @@ export const login = (email, password) => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(data.errMessage);
       }
       return data;
     };
@@ -56,7 +56,7 @@ export const register = (formData) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error("User registration failed");
       }
 
       return data;
@@ -67,7 +67,6 @@ export const register = (formData) => {
 
       dispatch(
         authActions.userRegister({
-          user: usersData.user,
           isAuthenticated: usersData.success,
         })
       );

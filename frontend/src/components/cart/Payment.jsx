@@ -16,6 +16,7 @@ import {
   CardCvcElement,
 } from "@stripe/react-stripe-js";
 import { uiActions } from "../../store/slice/ui-slice";
+import { orderActions } from "../../store/slice/order-slice";
 
 const options = {
   style: {
@@ -33,7 +34,7 @@ const Payment = ({ history }) => {
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
-
+  const { success } = useSelector((state) => state.order);
   const { user } = useSelector((state) => state.auth);
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const errorNotification = useSelector((state) => state.ui.notifcation);
@@ -46,7 +47,14 @@ const Payment = ({ history }) => {
         })
       );
     }
-  }, [errorNotification, dispatch, alert]);
+    if (success) {
+      dispatch(
+        orderActions.createOrder({
+          success: false,
+        })
+      );
+    }
+  }, [errorNotification, dispatch, alert, success]);
   const order = {
     orderItems: cartItems,
     shippingInfo,

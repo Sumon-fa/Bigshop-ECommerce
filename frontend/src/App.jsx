@@ -141,6 +141,7 @@ function App() {
           component={UpdateUser}
           exact
         />
+
         <Footer />
       </div>
     </Fragment>

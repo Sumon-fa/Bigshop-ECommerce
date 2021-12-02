@@ -22,7 +22,7 @@ const OrderDetails = ({ match }) => {
     totalPrice,
     orderStatus,
   } = order;
-  console.log(shippingInfo);
+
   useEffect(() => {
     dispatch(getMyOrderDetails(match.params.id));
 

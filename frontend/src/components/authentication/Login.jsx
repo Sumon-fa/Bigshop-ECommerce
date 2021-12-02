@@ -19,6 +19,7 @@ const Login = () => {
 
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
   const redirect = location.search ? location.search.split("=")[1] : "/";
+  console.log(isAuthenticated);
   useEffect(() => {
     if (isAuthenticated) {
       history.push(redirect);

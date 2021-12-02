@@ -27,7 +27,6 @@ const ListOrders = () => {
       );
     }
   }, [dispatch, alert, errorNotification]);
-  console.log(myOrdersData);
 
   const setOrders = () => {
     const data = {
