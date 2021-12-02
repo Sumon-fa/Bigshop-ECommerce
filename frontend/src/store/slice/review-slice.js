@@ -5,7 +5,7 @@ const reviewSlice = createSlice({
   initialState: {
     isLoading: false,
     review: [],
-    newReview: {},
+    success: false,
   },
   reducers: {
     loader(state) {
@@ -15,7 +15,7 @@ const reviewSlice = createSlice({
       state.review = action.payload.review;
     },
     newProductReview(state, action) {
-      state.newReview = action.payload.newReview;
+      state.success = action.payload.success;
     },
   },
 });
