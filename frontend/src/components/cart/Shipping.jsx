@@ -12,6 +12,7 @@ const Shipping = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const countriesList = Object.values(countries);
+
   const { shippingInfo } = useSelector((state) => state.cart);
 
   const [address, setAddress] = useState(shippingInfo.address);
@@ -22,6 +23,7 @@ const Shipping = () => {
 
   function submitHandler(e) {
     e.preventDefault();
+
     dispatch(getShippingInfo({ address, city, postalCode, phoneNo, country }));
     history.push("/confirm");
   }
