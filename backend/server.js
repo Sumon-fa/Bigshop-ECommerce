@@ -32,7 +32,13 @@ const server = app.listen(process.env.PORT, () => {
     `Server started on PORT: ${process.env.PORT} in ${process.env.NODE_ENV} mode.`
   );
 });
+app.get('/health', (req, res) => {
+  res.send('ok');
+});
 
+app.get('/version', (req, res) => {
+  res.send('1');
+});
 // Handle Unhandled Promise rejections
 process.on('unhandledRejection', (err) => {
   console.log(`ERROR: ${err.stack}`);
