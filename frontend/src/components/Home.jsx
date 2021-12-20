@@ -46,7 +46,6 @@ const Home = () => {
   const keyword = params.keyword;
   const [rating, setRating] = useState(0);
   const errorNotification = useSelector((state) => state.ui.notification);
-
   useEffect(() => {
     if (errorNotification) {
       return alert.error(errorNotification);

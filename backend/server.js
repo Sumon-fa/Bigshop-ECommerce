@@ -1,19 +1,19 @@
-const app = require('./app');
-const connectDatabase = require('./config/database');
+const app = require("./app");
+const connectDatabase = require("./config/database");
 
-//const dotenv = require('dotenv');
-const cloudinary = require('cloudinary');
+const dotenv = require("dotenv");
+const cloudinary = require("cloudinary");
 
 // Handle Uncaught exceptions
-process.on('uncaughtException', (err) => {
+process.on("uncaughtException", (err) => {
   console.log(`ERROR: ${err.stack}`);
-  console.log('Shutting down due to uncaught exception');
+  console.log("Shutting down due to uncaught exception");
   process.exit(1);
 });
 
 // Setting up config file
-if (process.env.NODE_ENV !== 'PRODUCTION')
-  require('dotenv').config({ path: 'backend/config/config.env' });
+if (process.env.NODE_ENV !== "PRODUCTION")
+  require("dotenv").config({ path: "backend/config/config.env" });
 
 //dotenv.config({ path: "backend/config/config.env" });
 
@@ -32,17 +32,11 @@ const server = app.listen(process.env.PORT, () => {
     `Server started on PORT: ${process.env.PORT} in ${process.env.NODE_ENV} mode.`
   );
 });
-app.get('/health', (req, res) => {
-  res.send('ok');
-});
 
-app.get('/version', (req, res) => {
-  res.send('1');
-});
 // Handle Unhandled Promise rejections
-process.on('unhandledRejection', (err) => {
+process.on("unhandledRejection", (err) => {
   console.log(`ERROR: ${err.stack}`);
-  console.log('Shutting down the server due to Unhandled Promise rejection');
+  console.log("Shutting down the server due to Unhandled Promise rejection");
   server.close(() => {
     process.exit(1);
   });

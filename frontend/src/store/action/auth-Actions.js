@@ -1,15 +1,15 @@
-import { uiActions } from '../slice/ui-slice';
-import { authActions } from '../slice/auth-slice';
-import { userActions } from '../slice/user-slice';
-import axios from 'axios';
+import { uiActions } from "../slice/ui-slice";
+import { authActions } from "../slice/auth-slice";
+import { userActions } from "../slice/user-slice";
+import axios from "axios";
 export const login = (email, password) => {
   return async (dispatch) => {
     const fetchUserData = async () => {
       dispatch(authActions.loader());
-      const response = await fetch('/api/v1/login', {
-        method: 'POST',
+      const response = await fetch("/api/v1/login", {
+        method: "POST",
         body: JSON.stringify({ email, password }),
-        headers: { 'Content-type': 'application/json' },
+        headers: { "Content-type": "application/json" },
       });
       const data = await response.json();
       if (!response.ok) {
@@ -49,14 +49,14 @@ export const register = (formData) => {
       /*  const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.post("/api/v1/register", formData, config);
       console.log(data);*/
-      const response = await fetch('/api/v1/register', {
-        method: 'POST',
+      const response = await fetch("/api/v1/register", {
+        method: "POST",
         body: formData,
       });
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error('User registration failed');
+        throw new Error("User registration failed");
       }
 
       return data;
@@ -95,7 +95,7 @@ export const userLoad = () => {
       /*  const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.post("/api/v1/register", formData, config);
       console.log(data);*/
-      const response = await fetch('/api/v1/me');
+      const response = await fetch("/api/v1/me");
       const data = await response.json();
 
       if (!response.ok) {
@@ -135,8 +135,8 @@ export const updateProfile = (userData) => {
   return async (dispatch) => {
     const fetchUserData = async () => {
       dispatch(userActions.loader());
-      const config = { 'Content-type': 'multipart/form-data' };
-      const { data } = await axios.put('/api/v1/me/update', userData, config);
+      const config = { "Content-type": "multipart/form-data" };
+      const { data } = await axios.put("/api/v1/me/update", userData, config);
 
       /*const response = await fetch("/api/v1/me/update", {
         method: "PUT",
@@ -183,7 +183,7 @@ export const logout = () => {
       /*  const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.post("/api/v1/register", formData, config);
       console.log(data);*/
-      const response = await fetch('/api/v1/logout');
+      const response = await fetch("/api/v1/logout");
       const data = await response.json();
 
       if (!response.ok) {
@@ -220,8 +220,8 @@ export const updatePassword = (passwords) => {
       /*const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.put("/api/v1/me/update", userData, config);
       console.log(data);*/
-      const response = await fetch('/api/v1/password/update', {
-        method: 'PUT',
+      const response = await fetch("/api/v1/password/update", {
+        method: "PUT",
         body: passwords,
       });
       const data = await response.json();
@@ -263,8 +263,8 @@ export const forgotPassword = (email) => {
       /*const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.put("/api/v1/me/update", userData, config);
       console.log(data);*/
-      const response = await fetch('/api/v1/password/forgot', {
-        method: 'POST',
+      const response = await fetch("/api/v1/password/forgot", {
+        method: "POST",
         body: email,
       });
       const data = await response.json();
@@ -308,7 +308,7 @@ export const resetPassword = (token, passwords) => {
       const { data } = await axios.put("/api/v1/me/update", userData, config);
       console.log(data);*/
       const response = await fetch(`/api/v1/password/reset/${token}`, {
-        method: 'PUT',
+        method: "PUT",
         body: passwords,
       });
       const data = await response.json();
@@ -346,7 +346,7 @@ export const getAllUsers = () => {
       /*const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.put("/api/v1/me/update", userData, config);
       console.log(data);*/
-      const response = await fetch('/api/v1/admin/users');
+      const response = await fetch("/api/v1/admin/users");
       const data = await response.json();
 
       if (!response.ok) {
@@ -379,7 +379,7 @@ export const deleteUser = (id) => {
     const fetchData = async () => {
       dispatch(userActions.loader());
       const response = await fetch(`/api/v1/admin/user/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       const data = await response.json();
@@ -414,7 +414,7 @@ export const updateUser = (id, formData) => {
       dispatch(userActions.loader());
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
 

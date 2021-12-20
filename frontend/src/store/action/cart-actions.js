@@ -1,5 +1,5 @@
-import { cartActions } from '../slice/cart-slice';
-import { uiActions } from '../slice/ui-slice';
+import { cartActions } from "../slice/cart-slice";
+import { uiActions } from "../slice/ui-slice";
 
 export const getAddItemToCart = (id, quantity) => {
   return async (dispatch, getState) => {
@@ -7,7 +7,7 @@ export const getAddItemToCart = (id, quantity) => {
       const response = await fetch(`/api/v1/product/${id}`);
 
       if (!response.ok) {
-        throw new Error('Could not fetch cart data!');
+        throw new Error("Could not fetch cart data!");
       }
 
       const data = await response.json();
@@ -30,14 +30,14 @@ export const getAddItemToCart = (id, quantity) => {
     } catch (error) {
       dispatch(
         uiActions.showNotification({
-          status: 'error',
-          title: 'Error!',
-          message: 'Fetching cart data failed!',
+          status: "error",
+          title: "Error!",
+          message: "Fetching cart data failed!",
         })
       );
     }
     localStorage.setItem(
-      'cartItems',
+      "cartItems",
       JSON.stringify(getState().cart.cartItems)
     );
   };
@@ -49,7 +49,7 @@ export const removeItemFromCart = (id) => async (dispatch, getState) => {
     })
   );
 
-  localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 export const getShippingInfo = (data) => async (dispatch) => {
   dispatch(
@@ -58,5 +58,5 @@ export const getShippingInfo = (data) => async (dispatch) => {
     })
   );
 
-  localStorage.setItem('shippingInfo', JSON.stringify(data));
+  localStorage.setItem("shippingInfo", JSON.stringify(data));
 };
