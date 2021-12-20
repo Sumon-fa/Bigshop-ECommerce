@@ -1,6 +1,6 @@
-import { uiActions } from "../slice/ui-slice";
-import { orderActions } from "../slice/order-slice";
-import axios from "axios";
+import { uiActions } from '../slice/ui-slice';
+import { orderActions } from '../slice/order-slice';
+import axios from 'axios';
 
 /*export const createOrder = (order) => async (dispatch) => {
   try {
@@ -38,10 +38,10 @@ export const createOrder = (order) => {
   return async (dispatch) => {
     const fetchData = async () => {
       dispatch(orderActions.loader());
-      const response = await fetch("/api/v1/order/new", {
-        method: "POST",
+      const response = await fetch('/api/v1/order/new', {
+        method: 'POST',
         body: JSON.stringify(order),
-        headers: { "Content-type": "application/json" },
+        headers: { 'Content-type': 'application/json' },
       });
 
       const data = await response.json();
@@ -75,7 +75,7 @@ export const getMyOrders = () => {
   return async (dispatch) => {
     const fetchData = async () => {
       dispatch(orderActions.loader());
-      const response = await fetch("/api/v1/orders/me");
+      const response = await fetch('/api/v1/orders/me');
 
       const data = await response.json();
       if (!response.ok) {
@@ -141,7 +141,7 @@ export const getAllOrder = () => {
   return async (dispatch) => {
     const fetchData = async () => {
       dispatch(orderActions.loader());
-      const response = await fetch("/api/v1/admin/orders");
+      const response = await fetch('/api/v1/admin/orders');
 
       const data = await response.json();
       if (!response.ok) {
@@ -177,7 +177,7 @@ export const updateOrder = (id, formData) => {
       dispatch(orderActions.loader());
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       };
 
@@ -214,7 +214,7 @@ export const deleteOrder = (id) => {
     const fetchData = async () => {
       dispatch(orderActions.loader());
       const response = await fetch(`/api/v1/admin/order/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       const data = await response.json();

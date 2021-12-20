@@ -1,13 +1,13 @@
-const Product = require("../models/product");
-const ErrorHandler = require("../utils/errorHandler");
-const ApiFeature = require("../utils/apiFeature");
-const cloudinary = require("cloudinary");
+const Product = require('../models/product');
+const ErrorHandler = require('../utils/errorHandler');
+const ApiFeature = require('../utils/apiFeature');
+const cloudinary = require('cloudinary');
 
-const catchAsyncError = require("../middlewares/catchAsyncError");
+const catchAsyncError = require('../middlewares/catchAsyncError');
 //create newProduct => /api/v1/new
-exports.newProduct = catchAsyncError(async (req, res, next) => {
+exports.newProduct = catchAsyncError(async (req, res) => {
   let images = [];
-  if (typeof req.body.images === "string") {
+  if (typeof req.body.images === 'string') {
     images.push(req.body.images);
   } else {
     images = req.body.images;
@@ -17,7 +17,7 @@ exports.newProduct = catchAsyncError(async (req, res, next) => {
 
   for (let i = 0; i < images.length; i++) {
     const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "products",
+      folder: 'products',
     });
 
     imagesLinks.push({
@@ -36,7 +36,7 @@ exports.newProduct = catchAsyncError(async (req, res, next) => {
   });
 });
 // get All products =>/api/v1/products
-exports.getProducts = catchAsyncError(async (req, res, next) => {
+exports.getProducts = catchAsyncError(async (req, res) => {
   const resPerPage = 8;
 
   const apiFeatures = new ApiFeature(Product.find(), req.query)
@@ -58,7 +58,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   }, 0);
 });
 // get all products =>/api/v1/admin/products
-exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
+exports.getAdminProducts = catchAsyncError(async (req, res) => {
   const products = await Product.find();
 
   res.status(200).json({
@@ -73,7 +73,7 @@ exports.getSingleProduct = catchAsyncError(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHandler("product not found", 404));
+    return next(new ErrorHandler('product not found', 404));
   }
   res.status(200).json({
     success: true,
@@ -84,7 +84,7 @@ exports.getSingleProduct = catchAsyncError(async (req, res, next) => {
 exports.updateProduct = catchAsyncError(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
   if (!product) {
-    return next(new ErrorHandler("product not found", 404));
+    return next(new ErrorHandler('product not found', 404));
   }
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -100,16 +100,16 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
 exports.deleteProduct = catchAsyncError(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
   if (!product) {
-    return next(new ErrorHandler("product not found", 404));
+    return next(new ErrorHandler('product not found', 404));
   }
   await product.remove();
   res.status(201).json({
     success: true,
-    message: "Product deleted successfully",
+    message: 'Product deleted successfully',
   });
 });
 // Create new review   =>   /api/v1/review
-exports.createProductReview = catchAsyncError(async (req, res, next) => {
+exports.createProductReview = catchAsyncError(async (req, res) => {
   const { rating, comment, productId } = req.body;
 
   const review = {
@@ -150,7 +150,7 @@ exports.createProductReview = catchAsyncError(async (req, res, next) => {
 });
 
 // Get Product Reviews   =>   /api/v1/reviews
-exports.getProductReviews = catchAsyncError(async (req, res, next) => {
+exports.getProductReviews = catchAsyncError(async (req, res) => {
   const product = await Product.findById(req.query.id);
 
   res.status(200).json({
@@ -160,7 +160,7 @@ exports.getProductReviews = catchAsyncError(async (req, res, next) => {
 });
 
 // Delete Product Review   =>   /api/v1/reviews
-exports.deleteReview = catchAsyncError(async (req, res, next) => {
+exports.deleteReview = catchAsyncError(async (req, res) => {
   const product = await Product.findById(req.query.productId);
 
   const reviews = product.reviews.filter(
@@ -196,11 +196,11 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    return next(new ErrorHandler('Product not found', 404));
   }
 
   let images = [];
-  if (typeof req.body.images === "string") {
+  if (typeof req.body.images === 'string') {
     images.push(req.body.images);
   } else {
     images = req.body.images;
@@ -209,16 +209,14 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
   if (images !== undefined) {
     // Deleting images associated with the product
     for (let i = 0; i < product.images.length; i++) {
-      const result = await cloudinary.v2.uploader.destroy(
-        product.images[i].public_id
-      );
+      await cloudinary.v2.uploader.destroy(product.images[i].public_id);
     }
 
     let imagesLinks = [];
 
     for (let i = 0; i < images.length; i++) {
       const result = await cloudinary.v2.uploader.upload(images[i], {
-        folder: "products",
+        folder: 'products',
       });
 
       imagesLinks.push({
@@ -247,20 +245,18 @@ exports.deleteProduct = catchAsyncError(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product not found", 404));
+    return next(new ErrorHandler('Product not found', 404));
   }
 
   // Deleting images associated with the product
   for (let i = 0; i < product.images.length; i++) {
-    const result = await cloudinary.v2.uploader.destroy(
-      product.images[i].public_id
-    );
+    await cloudinary.v2.uploader.destroy(product.images[i].public_id);
   }
 
   await product.remove();
 
   res.status(200).json({
     success: true,
-    message: "Product is deleted.",
+    message: 'Product is deleted.',
   });
 });

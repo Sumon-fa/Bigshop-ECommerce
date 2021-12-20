@@ -1,5 +1,5 @@
-import { reviewActions } from "../slice/review-slice";
-import { uiActions } from "../slice/ui-slice";
+import { reviewActions } from '../slice/review-slice';
+import { uiActions } from '../slice/ui-slice';
 
 export const getProductReviewById = (id) => {
   return async (dispatch) => {
@@ -39,8 +39,8 @@ export const newReview = (formData) => {
       /*  const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.post("/api/v1/register", formData, config);
       console.log(data);*/
-      const response = await fetch("/api/v1/review", {
-        method: "PUT",
+      const response = await fetch('/api/v1/review', {
+        method: 'PUT',
         body: formData,
       });
       const data = await response.json();
@@ -78,8 +78,8 @@ export const updateProductRevies = (formData) => {
       /*  const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.post("/api/v1/register", formData, config);
       console.log(data);*/
-      const response = await fetch("/api/v1/review", {
-        method: "PUT",
+      const response = await fetch('/api/v1/review', {
+        method: 'PUT',
         body: formData,
       });
       const data = await response.json();
