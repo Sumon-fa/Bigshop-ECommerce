@@ -33,8 +33,6 @@ import OrdersList from "./components/admin/OrderList";
 import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UserList";
 import UpdateUser from "./components/admin/UpdateUser";
-
-
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
   useEffect(() => {

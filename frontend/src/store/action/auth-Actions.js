@@ -13,7 +13,7 @@ export const login = (email, password) => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(data.errMessage);
       }
       return data;
     };
@@ -242,9 +242,10 @@ export const updatePassword = (passwords) => {
         })
       );
     } catch (error) {
+      const userData = await fetchUserData();
       dispatch(
         uiActions.showNotification({
-          message: error.message,
+          message: userData.response.error.message,
         })
       );
       dispatch(

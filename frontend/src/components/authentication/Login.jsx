@@ -18,7 +18,7 @@ const Login = () => {
   const errorNotification = useSelector((state) => state.ui.notification);
 
   const { isAuthenticated, isLoading } = useSelector((state) => state.auth);
-  
+  console.log(isLoading);
   const redirect = location.search ? location.search.split("=")[1] : "/";
   console.log(isAuthenticated);
   useEffect(() => {

@@ -191,7 +191,7 @@ export const updateOrder = (id, formData) => {
     };
 
     try {
-      var orderData = await fetchData();
+      const orderData = await fetchData();
 
       dispatch(
         orderActions.orderUpdate({
@@ -199,9 +199,10 @@ export const updateOrder = (id, formData) => {
         })
       );
     } catch (error) {
+      const userData = await fetchData();
       dispatch(
         uiActions.showNotification({
-          message: orderData.response.error.message,
+          message: userData.response.error.message,
         })
       );
     }
