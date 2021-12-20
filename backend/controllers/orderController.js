@@ -84,7 +84,7 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
   }
 
   order.orderItems.forEach(async (item) => {
-    await updateStock(item.product, item.quantity);
+    await updateStock(item._id, item.quantity);
   });
 
   (order.orderStatus = req.body.status), (order.deliveredAt = Date.now());

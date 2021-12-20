@@ -28,7 +28,7 @@ exports.newProduct = catchAsyncError(async (req, res, next) => {
 
   req.body.images = imagesLinks;
   req.body.user = req.user.id;
-
+  console.log(req.body.name);
   const product = await Product.create(req.body);
   res.status(201).json({
     success: true,

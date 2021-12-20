@@ -4,7 +4,7 @@ const orderSlice = createSlice({
   name: "order",
   initialState: {
     isLoading: false,
-    orderData: {},
+  success:false,
     myOrdersData: [],
     order: {},
     totalAmount: 0,
