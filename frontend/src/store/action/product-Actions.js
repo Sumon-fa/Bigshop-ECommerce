@@ -1,8 +1,9 @@
-import { uiActions } from "../slice/ui-slice";
-import { productActions } from "../slice/product-Slice";
-import { productDetailsActions } from "../slice/productDetails-slice";
+import { uiActions } from '../slice/ui-slice';
+import { productActions } from '../slice/product-Slice';
+import { productDetailsActions } from '../slice/productDetails-slice';
+
 export const getProducts = (
-  keyword = "",
+  keyword = '',
   currentPage = 1,
   price,
   category,
@@ -16,8 +17,9 @@ export const getProducts = (
         link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}`;
       }
       const response = await fetch(link);
+
       if (!response.ok) {
-        throw new Error("Something Went Wrong");
+        throw new Error('Something Went Wrong');
       }
       const data = await response.json();
 
@@ -52,7 +54,7 @@ export const getProductsDetails = (id) => {
       dispatch(productDetailsActions.loader());
       const response = await fetch(`/api/v1/product/${id}`);
       if (!response.ok) {
-        throw new Error("something went wrong");
+        throw new Error('something went wrong');
       }
 
       const data = await response.json();
@@ -83,7 +85,7 @@ export const getAdminProducts = () => {
   return async (dispatch) => {
     const fetchData = async () => {
       dispatch(productActions.loader());
-      const response = await fetch("/api/v1/admin/products");
+      const response = await fetch('/api/v1/admin/products');
 
       const data = await response.json();
       if (!response.ok) {
@@ -119,12 +121,12 @@ export const newProduct = (formData) => {
       /*  const config = { "Content-type": "multipart/form-data" };
       const { data } = await axios.post("/api/v1/register", formData, config);
       console.log(data);*/
-      const response = await fetch("/api/v1/admin/product/new", {
-        method: "POST",
+      const response = await fetch('/api/v1/admin/product/new', {
+        method: 'POST',
         body: formData,
       });
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.message);
       }
@@ -155,7 +157,7 @@ export const deleteProducts = (id) => {
     const fetchData = async () => {
       dispatch(productActions.loader());
       const response = await fetch(`/api/v1/admin/product/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       const data = await response.json();
@@ -189,7 +191,7 @@ export const productUpdating = (formData, id) => {
     const fetchData = async () => {
       dispatch(productActions.loader());
       const response = await fetch(`/api/v1/admin/product/${id}`, {
-        method: "PUT",
+        method: 'PUT',
         body: formData,
       });
 

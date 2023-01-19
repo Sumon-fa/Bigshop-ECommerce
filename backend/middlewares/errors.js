@@ -20,7 +20,7 @@ module.exports = (err, req, res, next) => {
     }
     // mongoose validation errorHandler
     if (err.name === "ValidatiorError") {
-      const message = object.values(err.errors).map((value) => value.message);
+      const message = Object.values(err.errors).map((value) => value.message);
       error = new ErrorHandler(message, 400);
       // i think price should not be default value
     }

@@ -23,7 +23,9 @@ npm i
 
 Use the following commeand to put some dummy products in that database.
 Run it in the root folder.
-
+"build": "cd client && npm run build",
+"install-client": "cd client && npm install",
+"heroku-postbuild": "npm run install-client && npm run build",
 ```
 npm run seeder
 ```
